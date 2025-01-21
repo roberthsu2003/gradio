@@ -32,6 +32,11 @@ demo.launch()
 ### 2. 使用者狀態(session state)
 Gradio 支援的另一種資料持久性類型是會話狀態,資料可以存留在同一頁的多個提交內,資料並不會和其它使用者共享。使用session state必需做3件事
 
+- function最後一個參數要接收想要保存的資料
+- function的return,最後一個return要傳出保存的資料
+- inputs的最後一個要使用gr.State(value=[]),由於保存的資料是list,value必需使用空的list,output的最後一個要使用gr.State(),接收保存資訊
+
+
 ```python
 #session state example
 
