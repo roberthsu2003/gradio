@@ -42,3 +42,28 @@ gradio xxx.py
 ![](./images/pic1.png)
 
 ### 程式觀念說明
+**Interface3個引數名稱**
+-fn:使用者介面的功能
+-inputs: 用於輸入的 Gradio 組件。組件的數量應該與函數中參數的數量相符。
+
+### 提供範例(examples)
+- 提供範例讓使用者知道如何操作
+- 提供的list元素順序,依據function參數的順序
+
+```python
+import gradio as gr
+
+def greet(name, intensity):
+    return "Hello, " + name + "!" * int(intensity)
+
+demo = gr.Interface(
+    fn=greet,
+    inputs=["text", "slider"],
+    outputs=["text"],
+    examples = [["徐國堂","2"],["徐瑞彤","1"]]
+)
+demo.launch()
+
+```
+
+![](./images/pic2.png)
