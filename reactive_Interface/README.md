@@ -1,5 +1,5 @@
 ## 2種回應介面(Reactive Interfaces)
-- 及時介面(Live Interface)
+- **及時介面(Live Interface)**
 
 	當改變數值是,自動更新介面(不用按submit)
 	
@@ -36,6 +36,7 @@ demo.launch()
 	
 ![](./images/pic1.png)
 
-- 串流介面(streaming Interface)
+- **串流介面(streaming Interface)**
+	- 
 
 
