@@ -67,3 +67,26 @@ demo.launch()
 ```
 
 ![](./images/pic2.png)
+
+### 增加標題
+
+```python
+import gradio as gr
+
+def greet(name, intensity):
+    return "Hello, " + name + "!" * int(intensity)
+
+demo = gr.Interface(
+    fn=greet,
+    inputs=["text", "slider"],
+    outputs=["text"],
+    examples = [["徐國堂","2"],["徐瑞彤","1"]],
+    title="Greeting and example",
+)
+
+demo.launch()
+```
+
+![](./images/pic3.png)
+
+### Flag的按鈕是使用者如何要保留資訊input的資訊,可以按下Flag,資料將會被儲存並通知開發者

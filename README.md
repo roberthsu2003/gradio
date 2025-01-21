@@ -11,6 +11,10 @@
 
 ### 3. [gradio提供的基本組件說明](https://www.gradio.app/docs/gradio/interface)
 
+### 4. 保存狀態
+- 全域狀態:所有使用者可以共用的狀態
+- session狀態:
+
 
 
 
