@@ -1,15 +1,3 @@
-# gradio UI介面
-- 適用於機器學習,深度學習,自然語言
-
-### 安裝
-
-```
-pip install --upgrade gradio
-```
-
-### 建立第一個範例
-
-```python
 import gradio as gr
 
 def greet(name, intensity):
@@ -22,7 +10,3 @@ demo = gr.Interface(
 )
 
 demo.launch()
-
-```
-
-![](./images/pic1.png)
