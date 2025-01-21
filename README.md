@@ -11,9 +11,9 @@
 
 ### 3. [gradio提供的基本組件說明](https://www.gradio.app/docs/gradio/interface)
 
-### 4. 保存狀態
+### 4. [保存使用者狀態](./interface_state)
 - 全域狀態:所有使用者可以共用的狀態
-- session狀態:
+- session狀態:當使用者按下summit按鈕後,資料可以保存,但其它使用者無法使用
 
 
 
