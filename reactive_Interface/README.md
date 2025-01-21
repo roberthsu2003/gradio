@@ -37,6 +37,29 @@ demo.launch()
 ![](./images/pic1.png)
 
 - **串流介面(streaming Interface)**
-	- 
+	- gr.Audio(source='microphone')
+	- gr.Image()
+
+```
+# stream Interface
+# 使用webcam照一張照片
+
+import gradio as gr
+import numpy as np
+
+def flip(im):
+    return np.flipud(im)
+
+demo = gr.Interface(
+    fn = flip,
+    inputs = gr.Image(source=["webcam"],streaming=True),
+    outputs = "image",
+    live = True
+)
+
+demo.launch()
+```
+
+![](./images/pic2.png)
 
 
