@@ -143,6 +143,9 @@ demo.launch()
 
 ![](./images/pic4.png)
 
+## Function Input List vs Dict
+
+
 
 
 
