@@ -1,2 +1,5 @@
 gradio
+requests
 ipywidgets
+transformers
+torch
