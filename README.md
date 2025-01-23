@@ -21,7 +21,7 @@
 
 ### 6. [4種版面介面](./four_kinds_of_interface)
 
-### 7. [手動介面](./building_with_blocks)
+### 7. [blocks類別介面](./building_with_blocks)
 
 
 
