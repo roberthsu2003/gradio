@@ -143,7 +143,164 @@ demo.launch()
 
 ![](./images/pic4.png)
 
-## Function Input List vs Dict
+## 事件監聽函式inputs的值是List vs Set(Function Input List vs Dict)
+- 如何輸入的組件有2個以上,則監聽函式inputs需要多個
+- 如果inputs使用的是list,代表function內的參數必需建立多個(依順序並數量必需和list的元素數量相常)
+- 如果inputs使用的是set,代表function內的參數只要一個,因為傳給參數是dict,dict的key值是依據set值的名稱
+
+```python
+# Function Input List vs Dict
+
+import gradio as gr
+
+with gr.Blocks() as demo:
+    a = gr.Number(label='a')
+    b = gr.Number(label='b')
+    with gr.Row():
+        add_btn = gr.Button('Add')
+        sub_btn = gr.Button('Subtract')
+    c = gr.Number(label='sum')
+
+    def add(num1, num2):
+        return num1 + num2
+    add_btn.click(add, inputs=[a, b], outputs=c)
+
+    def sub(data):
+        return data[a] - data[b]
+    sub_btn.click(sub, inputs={a, b}, outputs=c)
+
+demo.launch()
+
+```
+
+![](./images/pic5.png)
+
+## 事件監聽函式outputs的值是list,代表輸出至多個組件
+- function也值需傳出多個值(tuple)
+
+```python
+# Function Return List
+
+import gradio as gr
+
+with gr.Blocks() as demo:
+    food_box = gr.Number(value=10, label="Food Count")
+    status_box = gr.Textbox()
+
+    def eat(food):
+        if food > 0:
+            return food-1, "full"
+        else:
+            return 0, "hungry"
+        
+    gr.Button("Eat").click(
+        fn = eat,
+        inputs = food_box,
+        outputs = [food_box, status_box]
+    )
+
+demo.launch()
+```
+
+![](./images/pic6.png)
+
+## 動態更新組件的配置
+
+```pytnon
+#Updating Component Configurations
+
+import gradio as gr
+
+def change_textbox(choice):
+    if choice == "short":
+        return gr.Textbox(lines=2, visible=True)
+    elif choice == "long":
+        return gr.Textbox(lines=8, visible=True, value="Lorem ipsum dolor sit amet")
+    else:
+        return gr.Textbox(visible=False)
+    
+with gr.Blocks() as demo:
+    radio = gr.Radio(
+        ["short", "long", "hidden"],
+        label="What kind of essay would you like to write?"
+    )
+    text = gr.Textbox(lines=2, interactive=True, show_copy_button=True)
+    radio.change(
+        fn = change_textbox,
+        inputs = radio,
+        outputs = text
+    )
+
+demo.launch()
+```
+
+![](./images/pic7.png)
+
+## 不改變Component的值
+
+```python
+#Not Changing a Component's Value
+
+import random
+import gradio as gr
+
+with gr.Blocks() as demo:
+    with gr.Row():
+        clear_button = gr.Button("Clear")
+        skip_button = gr.Button("Skip")
+        random_button = gr.Button("Random")
+    numbers = [gr.Number(), gr.Number()]
+
+    clear_button.click(lambda: (None, None),outputs=numbers)
+    skip_button.click(lambda: [gr.skip(), gr.skip()], outputs=numbers)
+    random_button.click(lambda: (random.randint(0,100),random.randint(0,100)), outputs=numbers)
+
+demo.launch()
+```
+
+![](./images/pic8.png)
+
+## 連續執行事件
+- 執行完事件後,接續執行下一個事件
+- 使用then()
+
+```python
+#Running Events Consecutively
+
+import gradio as gr
+import random
+import time
+
+with gr.Blocks() as demo:
+    chatbot = gr.Chatbot()
+    msg = gr.Textbox()
+    clear = gr.Button("Clear")
+
+    def user(user_message, history):
+        print(history)
+        return "", history + [[user_message, None]]
+    
+    def bot(history):
+        bot_message = random.choice(["I'm sorry, I don't understand.", "I'm a chatbot.", "I'm here to help you."])
+        time.sleep(2)
+        history[-1][1] = bot_message
+        return history
+    
+    msg.submit(fn=user, inputs=[msg, chatbot], outputs=[msg, chatbot], queue=False).then(
+        fn=bot,
+        inputs=chatbot,
+        outputs=chatbot
+    )
+    clear.click(lambda: None, None, outputs=chatbot, queue=False)
+
+demo.launch()
+```
+
+![](./images/pic9.png)
+
+
+
+
 
 
 
