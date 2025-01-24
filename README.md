@@ -33,7 +33,7 @@
 
 ### 10. [使用Rrender decorator建立動態App](./dynamic_number_of_components)
 
-### 11. [更多Block的功能](./)
+### 11. [更多Block的功能](./more_blocks_features)
 
 
 
