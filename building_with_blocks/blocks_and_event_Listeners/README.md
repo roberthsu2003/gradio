@@ -298,7 +298,7 @@ demo.launch()
 
 ![](./images/pic9.png)
 
-## 鍊結多到觸發到一個function
+## 鍊結多個組件,同時觸發相同的事件監聽函式
 
 ```python
 import gradio as gr
