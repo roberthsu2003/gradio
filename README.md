@@ -25,11 +25,11 @@
 
 ## Blocks類別
 
-### 7. [blocks類別介面](./building_with_blocks)
+### 7. [blocks類別介面](./building_with_blocks/blocks_and_event_Listeners)
 
 ### 8. [版面控制](./interface_state)
 
-### 9. [保存Blocks內的狀態](./state_in_block)
+### 9. [保存Blocks內的狀態](./state_in_block/)
 
 
 
