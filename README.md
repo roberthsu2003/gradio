@@ -8,6 +8,8 @@
 
 - 由線上編輯器,快速尋找到您專案app適合的介面
 - 透過線上編輯器左邊欄位,可以快速了解,gradio提供的常用組件,還有相關的程式碼範例碼
+- 
+## Interface類別
 
 ### 3. [gradio提供的基本組件說明](https://www.gradio.app/docs/gradio/interface)
 
@@ -20,6 +22,8 @@
 - 串流回應(stream Interface)
 
 ### 6. [4種版面介面](./four_kinds_of_interface)
+
+## Blocks類別
 
 ### 7. [blocks類別介面](./building_with_blocks)
 
