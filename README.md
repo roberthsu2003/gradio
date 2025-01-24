@@ -31,6 +31,8 @@
 
 ### 9. [保存Blocks內的狀態](./state_in_block/)
 
+### 10. [使用Rrender decorator建立動態App](./dynamic_number_of_components)
+
 
 
 
