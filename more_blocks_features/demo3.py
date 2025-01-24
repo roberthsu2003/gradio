@@ -13,4 +13,4 @@ with gr.Blocks() as demo:
         
     board.select(place,[board, turn],[board, turn], show_progress='hidden')
 
-demo.launch())
+demo.launch()
