@@ -11,31 +11,39 @@
 - 
 ## Interface類別
 
-### 3. [gradio提供的基本組件說明](https://www.gradio.app/docs/gradio/interface)
+### 1. [gradio提供的基本組件說明](https://www.gradio.app/docs/gradio/interface)
 
-### 4. [保存使用者狀態](./interface_state)
+### 2. [保存使用者狀態](./interface_state)
 - 全域狀態:所有使用者可以共用的狀態
 - session狀態:當使用者按下summit按鈕後,資料可以保存,但其它使用者無法使用
 
-### 5. [2種回應介面](./reactive_Interface)
+### 3. [2種回應介面](./reactive_Interface)
 - 即時回應(live Interface)
 - 串流回應(stream Interface)
 
-### 6. [4種版面介面](./four_kinds_of_interface)
+### 4. [4種版面介面](./four_kinds_of_interface)
 
 ## Blocks類別
 
-### 7. [blocks類別介面](./building_with_blocks/blocks_and_event_Listeners)
+### 1. [blocks類別介面](./building_with_blocks/blocks_and_event_Listeners)
 
-### 8. [版面控制](./interface_state)
+### 2. [版面控制](./interface_state)
 
-### 9. [保存Blocks內的狀態](./state_in_block/)
+### 3. [保存Blocks內的狀態](./state_in_block/)
 
-### 10. [使用Rrender decorator建立動態App](./dynamic_number_of_components)
+### 4. [使用Rrender decorator建立動態App](./dynamic_number_of_components)
 
-### 11. [更多Block的功能](./more_blocks_features)
+### 5. [更多Block的功能](./more_blocks_features)
 
-### 12. [自訂css and js]
+### 6. [自訂css and js]
+
+## 進階功能
+
+### 1. [佇列(Queuing)](./queuing)
+
+### 2. [串流輸出(streaming outputs)](./streaming_outputs)
+
+
 
 
 
