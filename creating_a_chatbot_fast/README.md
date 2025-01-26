@@ -42,5 +42,38 @@ Paris is also the largest city.
 **範例,亂數傳出Yes或No
 
 ```
+import gradio as gr
+import random
+
+def random_message(message, history):
+    return random.choice(['Yes','No'])
+
+gr.ChatInterface(
+    fn = random_message,
+    type = "messages"
+).launch()
+```
+
+- type: 一定都要設為`messages`
+
+![](./images/pic1.png)
+
+**範例,輪流傳出agreeing and disagreeing**
 
 ```
+import gradio as gr
+
+def alternatingly_agree(message, history):
+    if len([h for h in history if h['role']=='assistant']) % 2 == 0:
+        return f"yes, I do think that:{message}"
+    else:
+        return "I don't think so"
+
+gr.ChatInterface(
+    fn = alternatingly_agree,
+    type = "messages"
+).launch()
+```
+
+![](./images/pic2.png)
+
