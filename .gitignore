@@ -1,0 +1,16 @@
+.gradio
+.env
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+*.class
+*.o
+*.so
+*.dylib
+*.jar
+*.war
+*.ear
+*.iml
+.idea
+.vscode
