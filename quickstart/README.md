@@ -92,3 +92,23 @@ demo.launch()
 ![](./images/pic3.png)
 
 ### Flag的按鈕是使用者如何要保留資訊input的資訊,可以按下Flag,資料將會被儲存並通知開發者
+
+
+### 分享gradio專案
+
+```python
+import gradio as gr
+
+def greet(name, intensity):
+    return "Hello, " + name + "!" * int(intensity)
+
+demo = gr.Interface(
+    fn=greet,
+    inputs=["text", "slider"],
+    outputs=["text"],
+    examples = [["徐國堂","2"],["徐瑞彤","1"]]
+)
+demo.launch(share=True)) # Share your demo with just 1 extra parameter 🚀
+
+``` 
+
