@@ -29,12 +29,15 @@ target_names = model_data["target_names"]
 # 2. 建立 FastAPI 實例與 Pydantic 資料結構
 app = FastAPI(title="Iris 預測服務 API")
 
+# 定義 API 請求的輸入資料格式（Pydantic 模型）
+# 註：Field(..., ...) 中的第一個參數「...」(Ellipsis) 代表該欄位為「必填 (Required)」，沒有預設值
 class IrisInput(BaseModel):
-    sepal_length: float = Field(..., ge=0.1, le=10.0, description="花萼長度")
+    sepal_length: float = Field(..., ge=0.1, le=10.0, description="花萼長度")  # ge: 大於等於 0.1, le: 小於等於 10.0
     sepal_width: float = Field(..., ge=0.1, le=10.0, description="花萼寬度")
     petal_length: float = Field(..., ge=0.1, le=10.0, description="花瓣長度")
     petal_width: float = Field(..., ge=0.1, le=10.0, description="花瓣寬度")
 
+# 定義 API 回傳的輸出資料格式
 class IrisOutput(BaseModel):
     prediction: str = Field(..., description="預測品種名稱")
     probabilities: dict[str, float] = Field(..., description="各品種預測機率")
