@@ -1,138 +1,143 @@
-## 如何建立一個Gradio Chatbot
+# 💬 快速構建聊天機器人 (Chatbots)
 
-## 整合olloma
+Gradio 提供了高階組件 **`gr.ChatInterface`**，專為對話式應用程式設計。您可以利用它在幾行程式碼內，快速包裝大語言模型 (LLM)，建立一個具備對話紀錄、清除、重試等功能的完整聊天機器人。
+
+---
+
+## 🔌 1. 整合 Ollama 本地模型
+
+如果您在本地執行 Ollama，可以直接使用 `gr.load_chat` 一行程式碼載入並啟動與 LLM 的對話介面：
 
 ```python
 import gradio as gr
 
+# 載入本地運行的 Llama 3.2 模型並啟動對話網頁
 gr.load_chat("http://localhost:11434/v1/", model="llama3.2", token="ollama").launch()
 ```
 
+---
 
-## 定義一個chat 函式
+## 🛠️ 2. 自訂對話處理函數 (Chat Function)
 
-使用gr.ChatInterface()建立一個chatbot應用程式, 第1件事必需定義自已的chat 函式,在最簡單的範例中,你的chat 函式必需接受2個引數:message和history,可以任何的引數名稱,但要依順序
+當您要結合客製化模型或自訂 API 時，您需要定義一個問答處理函數。
 
-- message: 型別為str,是使用者填寫的資料
-- history: 是一個openai樣式的dictionary,包含role和content的key,儲存先前的對話記錄。
+在最基礎的架構下，您的問答函數必須依序接受兩個參數：
+1.  **`message`** (`str`)：使用者當前輸入的文字。
+2.  **`history`** (`list[dict]`)：包含先前所有對話紀錄的列表。
 
-**history的格式如下**
-
+### 📝 對話歷史紀錄的格式
+Gradio 傳入的 `history` 採用類似 OpenAI 聊天 API 的結構，格式如下：
 ```python
 [
-    {"role": "user", "content": "What is the capital of France?"},
-    {"role": "assistant", "content": "Paris"}
+    {"role": "user", "content": "法國的首都是哪裡？"},
+    {"role": "assistant", "content": "巴黎。"}
 ]
 ```
 
-如果下一個message如下:
+### 範例 A：簡單的隨機回覆機器人 (Yes/No Bot)
 
-```
-"And what is its largest city?"
-```
+被執行的函數必須回傳一個 `str` 作為機器人的回覆內容：
 
-這是chat 函式必需要傳出字串
-
-- return 值 - 這個值是依據history和message傳出的回答,如這個案例
-
-```
-Paris is also the largest city.
-```
-
-**範例,亂數傳出Yes或No
-
-```
+```python
 import gradio as gr
 import random
 
 def random_message(message, history):
-    return random.choice(['Yes','No'])
+    # 隨機回覆是的或不對
+    return random.choice(['是的 (Yes)', '不對 (No)'])
 
 gr.ChatInterface(
-    fn = random_message,
-    type = "messages"
+    fn=random_message,
+    type="messages" # 設定為 messages 模式以使用 OpenAI 樣式的 history 格式
 ).launch()
 ```
 
-- type: 一定都要設為`messages`
-
 ![](./images/pic1.png)
 
-**範例,輪流傳出agreeing and disagreeing**
+> [!WARNING]
+> 請務必指定 `type="messages"`，以確保傳入函數的 `history` 格式為最新的 `dict` 列表。
 
-```
+---
+
+### 範例 B：根據歷史紀錄進行交替回覆的機器人
+
+```python
 import gradio as gr
 
 def alternatingly_agree(message, history):
-    if len([h for h in history if h['role']=='assistant']) % 2 == 0:
-        return f"yes, I do think that:{message}"
+    # 計算歷史對話中機器人回答了幾次，藉此決定這次要同意還是反對
+    assistant_messages = [h for h in history if h['role'] == 'assistant']
+    if len(assistant_messages) % 2 == 0:
+        return f"沒錯，我也這麼認為：{message}"
     else:
-        return "I don't think so"
+        return "我不這麼認為。"
 
 gr.ChatInterface(
-    fn = alternatingly_agree,
-    type = "messages"
+    fn=alternatingly_agree,
+    type="messages"
 ).launch()
 ```
 
 ![](./images/pic2.png)
 
-## 串流的chatbots(Streaming chatbots)
-在chat函式內傳出使用yield,每次傳出的str,會取代先前在chatbot畫面上原來的值
+---
 
-```
+## 🌊 3. 串流聊天機器人 (Streaming Chatbots)
+
+若您希望機器人能有類似 ChatGPT 的「打字機」逐字輸出效果，只需在對話處理函數中使用 Python 的 Generator (`yield`) 即可。每次 `yield` 傳出的字串都會即時更新並覆蓋前一次的對話內容：
+
+```python
 import time
 import gradio as gr
 
 def slow_echo(message, history):
+    # 逐字累加輸出使用者輸入的文字
     for i in range(len(message)):
-        time. sleep(0.3)
-        yield "You typed: " + message[:i+1]
+        time.sleep(0.1)
+        yield "您輸入了：" + message[:i+1]
 
 demo = gr.ChatInterface(
-    fn = slow_echo,
-    type = "messages"
-    )
+    fn=slow_echo,
+    type="messages"
+)
 
 demo.launch()
 ```
 
 ![](./images/pic3.png)
 
-## 自訂Chat外觀-Customizing the Chat UI
+---
 
-- 增加title,description引數
-- 增加theme,使用theme和css引數
-- 增加examples,讓使用者可以容易的測試
-- 改變height, placehoder或textbox(最大數量的字數或增加placeholder)
+## 🎨 4. 自訂聊天介面外觀 (Customizing Chat UI)
 
+`gr.ChatInterface` 提供了豐富的自訂選項，讓您可以微調主題、標題、輸入框行為或添加測試範例：
 
-### 增加examples
-- 使用exmaples->使用list of str
-- 如果有包涵圖片->使用list of dict,dict的格式如下:
-	- {'text': "What's in this image?", "files":["cheetah.jpg"]}
+*   **`title`** 與 **`description`**：在聊天室上方新增標題與副標題。
+*   **`theme`**：套用 Gradio 預設主題（如 `"ocean"`, `"soft"`, `"monochrome"`）。
+*   **`examples`**：提供預設問題，使用者點選即可發送。
+*   **`chatbot`** 與 **`textbox`**：傳入自訂的 `gr.Chatbot` 與 `gr.Textbox` 實例，用以調整元件高度、placeholder、或比例。
 
-
-**自定chatbot 或 textbox組件
+### 綜合範例：是是先生 (Yes Man) 聊天機器人
 
 ```python
 import gradio as gr
 
 def yes_man(message, history):
     if message.endswith("?"):
-        return "Yes"
+        return "是的！"
     else:
-        return "Ask me anything!"
+        return "請儘管問我任何問題！"
 
 demo = gr.ChatInterface(
-    fn = yes_man,
-    type= "messages",
-    chatbot = gr.Chatbot(height=300),
-    textbox = gr.Textbox(placeholder="Ask me a yes or no question", container=False, scale=7),
-    title = "Yes Man",
-    description = "Ask Yes Man any question",
-    theme = "ocean",
-    examples = ["Hello", "Am I cool?", "Are tomatoes vegetables?"]
+    fn=yes_man,
+    type="messages",
+    # 傳入客製化的 Chatbot 與 Textbox 元件以微調外觀
+    chatbot=gr.Chatbot(height=350, placeholder="<strong>🤖 歡迎來到是是先生的對話室</strong><br>不論您問什麼是非題，我都會舉雙手贊成！"),
+    textbox=gr.Textbox(placeholder="請輸入一個是非題（以問號 ? 結尾）...", container=False, scale=7),
+    title="👍 是是先生 (Yes Man)",
+    description="問『是是先生』任何問題，他都會欣然同意！",
+    theme="ocean",
+    examples=["你好", "我很酷嗎？", "番茄是蔬菜嗎？"]
 )
 
 demo.launch()
@@ -140,13 +145,5 @@ demo.launch()
 
 ![](./images/pic4.png)
 
-**chatbot的placeholder引數接受Markdown語法或html語法**
-
-```python
-gr.ChatInterface(
-    yes_man,
-    type="messages",
-    chatbot=gr.Chatbot(placeholder="<strong>Your Personal Yes-Man</strong><br>Ask Me Anything"),
-```
 
 

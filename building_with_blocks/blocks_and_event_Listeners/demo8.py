@@ -3,7 +3,7 @@
 import gradio as gr
 
 with gr.Blocks() as demo:
-    food_box = gr.Number(value=10, label="Food Count")
+    food_box = gr.Number(value=10, label="食物數量")
     status_box = gr.Textbox()
 
     def eat(food):

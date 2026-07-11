@@ -18,8 +18,8 @@ with demo:
     text = gr.Textbox()
     label = gr.Label()
 
-    b1 = gr.Button("Recognize Speech")
-    b2 = gr.Button("Classify Sentiment")
+    b1 = gr.Button("語音辨識")
+    b2 = gr.Button("情緒分類")
 
     b1.click(speech_to_text, inputs=audio_file, outputs=text)
     b2.click(text_to_sentiment, inputs=text, outputs=label)

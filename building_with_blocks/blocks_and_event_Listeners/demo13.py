@@ -5,7 +5,7 @@ with gr.Blocks() as demo:
         num1 = gr.Slider(1, 10)
         num2 = gr.Slider(1, 10)
         num3 = gr.Slider(1, 10)
-    output = gr.Number(label="Sum")
+    output = gr.Number(label="加總結果")
 
     @gr.on(inputs=[num1, num2, num3], outputs=output)
     def sum(a, b, c):

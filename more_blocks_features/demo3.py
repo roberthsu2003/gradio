@@ -1,7 +1,7 @@
 import gradio as gr
 
 with gr.Blocks() as demo:
-    turn = gr.Textbox("X", interactive=False, label="Turn")
+    turn = gr.Textbox("X", interactive=False, label="👤 當前玩家回合")
     board = gr.Dataframe(value=[["","",""]]*3, interactive=False, type="array")
 
     def place(board:list[list[int]], turn, evt:gr.SelectData):

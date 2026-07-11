@@ -1,40 +1,54 @@
-## 佇例Queuing
-- 佇列內可以依順序放置事件任務,並可以依序執行工作.
-- 先進先處理,直到處理完畢,完畢後,從佇列移除任務
+# ⚙️ 佇列機制 (Queuing)
 
-每一個Gradio App都有佇列系統,佇列可擴展到數千人同時使用。因為每個app都存在許多事件監聽器可能涉及大量的處理工作,因此Gradio會自動在應用程式背景為每一個事件監聽器建立一個佇列以便於處理事件監聽器的事件任務
+當有多位使用者同時使用同一個 Gradio 應用程式時，若背後運行的模型推理或資料處理量非常龐大，可能會導致伺服器過載或回應逾時。為了解決此問題，Gradio 內建了高效的**佇列 (Queue) 系統**。
 
-### 設定Queue
-預設的情況下,每一個事件監聽器會有一個專用的queue,一次處理一個事件任務。如果要修改這個設定可以透過2個引數來修改。
+> [!NOTE]
+> **佇列的運作原則：**
+> Gradio 會在背景為事件建立排隊佇列，遵循 **先進先出 (FIFO, First In First Out)** 的原則。當有大量請求湧入時，使用者會看見自己當前的排隊名次，系統會依序處理，處理完畢後自動將該任務從佇列中移除。
 
-- concurrency_limit:可以設定一次可以同時處理事件任務的數量,預設為1,也可以透過Blocks.queue()的方式更改預設值,如果不要有限制可以設成None,就是沒有限制同時執行多少個數量的事件需求。
+---
 
-```
+## 🛠️ 配置佇列參數
+
+預設情況下，Gradio 會為每個事件監聽器啟用佇列，並限制每次只處理一個任務。您可以透過以下兩個核心參數來調整佇列的並行處理策略：
+
+### 1. `concurrency_limit` (並行限制)
+控制此事件監聽器**同一時間最大允許的並行執行任務數**。
+- `concurrency_limit=1`（預設值）：一次只處理一個請求，其餘排隊。
+- `concurrency_limit=5`：允許最多 5 個任務同時並行運算。
+- `concurrency_limit=None`：不設限制，所有進來的任務均會立即並行處理（需注意伺服器負載）。
+
+```python
 import gradio as gr
 
 with gr.Blocks() as demo:
-	prompt = gr.Textbox()
-	image = gr.Image()
-	generate_btn = gr.Button("Generate Image")
-	
-	generate_btn.click(image_gen, prompt, image, concurrency_limit=5)
+    prompt = gr.Textbox(label="請輸入提示詞")
+    image = gr.Image(label="生成的圖片")
+    generate_btn = gr.Button("🎨 生成圖片")
+    
+    # 限制該點擊事件最多允許 5 個任務同時生成
+    generate_btn.click(image_gen, inputs=prompt, outputs=image, concurrency_limit=5)
 ```
 
-上面的程式碼,這個click事件監聽器最多一次可以同時處理5個以上的事件需求任務,如果有超過的事件需求任務必需排隊等到其它完成後有才會再處理。
+---
 
-- concurrency_id:這個設定允許多個事件監聽器共同使用同一個queue
+### 2. `concurrency_id` (共用佇列識別碼)
+當您的應用中有多個不同的按鈕事件，但它們背後都共用同一個受限資源（例如只有一張顯卡，或只有一個外部 API Key）時，您可以使用 `concurrency_id` 將多個事件監聽器**綁定在同一個共用佇列**中，並限制該佇列整體的總並行數。
 
-```
+```python
 import gradio as gr
+
 with gr.Blocks() as demo:
-	prompt = gr.Textbox()
-	image = gr.Image()
-	generate_btn_1 = gr.Button("Generate Image via model 1")
-	generate_btn_2 = gr.Button("Generate Image via model 2")
-	generate_btn_3 = gr.Button("Generate Image via model 3")
-	generate_btn_1.click(image_gen_1, prompt, image, concurrency_limit=2, concurrency_id="gpu_queue")
-	
-	generate_btn_2.click(image_gen_1, prompt, image, concurrency_limit=2, concurrency_id="gpu_queue")
-	
-	generate_btn_3.click(image_gen_1, prompt, image, concurrency_limit=2, concurrency_id="gpu_queue")
+    prompt = gr.Textbox(label="請輸入提示詞")
+    image = gr.Image(label="生成的圖片")
+    
+    generate_btn_1 = gr.Button("🎨 使用模型 A 生成")
+    generate_btn_2 = gr.Button("🎨 使用模型 B 生成")
+    generate_btn_3 = gr.Button("🎨 使用模型 C 生成")
+    
+    # 藉由指定相同的 concurrency_id="gpu_queue"
+    # 這三個按鈕所觸發的事件將會共用同一個 GPU 資源佇列，且總並行上限為 2
+    generate_btn_1.click(image_gen_1, prompt, image, concurrency_limit=2, concurrency_id="gpu_queue")
+    generate_btn_2.click(image_gen_2, prompt, image, concurrency_limit=2, concurrency_id="gpu_queue")
+    generate_btn_3.click(image_gen_3, prompt, image, concurrency_limit=2, concurrency_id="gpu_queue")
 ```

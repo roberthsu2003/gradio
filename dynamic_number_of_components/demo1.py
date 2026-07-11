@@ -3,7 +3,7 @@
 import gradio as gr
 
 with gr.Blocks() as demo:
-    input_text = gr.Textbox(label='input')
+    input_text = gr.Textbox(label="請輸入文字")
 
     @gr.render(inputs=input_text)
     def show_split(text):
