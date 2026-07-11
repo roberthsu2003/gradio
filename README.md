@@ -49,8 +49,5 @@
 ### 💬 聊天機器人 (Chatbots)
 *   **[快速構建 Chatbot 應用](./creating_a_chatbot_fast)**：結合 `gr.ChatInterface` 與本地/線上大語言模型（如 Ollama）快速搭建對話介面。
 
-
-
-
-
-
+### 🔌 模型部署與 API 整合
+*   **[FastAPI 整合與 HF Spaces 部署](./model_deployment_fastapi_hf)**：利用猴子補丁與掛載技術，在同一個 Hugging Face Space 中同時提供 Web API 端點與 Gradio UI，無須撰寫 Dockerfile。

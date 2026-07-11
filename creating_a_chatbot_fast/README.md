@@ -26,7 +26,14 @@ gr.load_chat("http://localhost:11434/v1/", model="llama3.2", token="ollama").lau
 2.  **`history`** (`list[dict]`)：包含先前所有對話紀錄的列表。
 
 ### 📝 對話歷史紀錄的格式
-Gradio 傳入的 `history` 採用類似 OpenAI 聊天 API 的結構，格式如下：
+
+> [!IMPORTANT]
+> **📢 Gradio 5 版本歷史紀錄格式重大變更：**
+> *   **新版格式 (推薦)**：在 Gradio 5 中，預設且推薦的格式為 **OpenAI 樣式的字典列表 (`type="messages"`)**，其結構如以下範例所示。這能完美與各大 LLM API（如 OpenAI, Anthropic）對接。
+> *   **舊版格式 (Tuples)**：若您的程式碼使用的是舊版的二元列表（例如 `[[user_msg, bot_msg], ...]`），您必須在 `gr.Chatbot` 或 `gr.ChatInterface` 的參數中顯式加上 **`type="tuples"`**，否則會發生型態不相容的錯誤。
+> 
+> 以下為 Gradio 5 預設的 `type="messages"` 結構：
+> 
 ```python
 [
     {"role": "user", "content": "法國的首都是哪裡？"},
