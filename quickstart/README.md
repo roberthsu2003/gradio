@@ -4,16 +4,33 @@
 
 ---
 
-## 💾 安裝
+## 💾 安裝與環境建立
 
-您可以透過 pip 來安裝或升級 Gradio：
+我們推薦使用現代化且極速的 Python 套件管理工具 **`uv`** 來建立虛擬環境並安裝 Gradio。
 
+### 使用 `uv` (推薦)
 ```bash
+# 建立並啟用虛擬環境
+uv venv
+source .venv/bin/activate  # Windows 請用 .venv\Scripts\activate
+
+# 安裝 Gradio
+uv pip install gradio
+```
+
+### 使用傳統 `pip`
+```bash
+# 建立並啟用虛擬環境
+python3 -m venv .venv
+source .venv/bin/activate
+
+# 安裝 Gradio
 pip install --upgrade gradio
 ```
 
 > [!TIP]
-> Gradio 除了可以作為獨立腳本執行，也完全支援在 Jupyter Notebook、Google Colab 等互動式開發環境中直接嵌入運行。
+> Gradio 除了可以作為獨立腳本執行，也完全支援在 Jupyter Notebook、Google Colab 等互動式開發環境中直接嵌入運行。在互動式環境中，您可以使用 `!uv pip install gradio` 或 `!pip install gradio` 進行安裝。
+
 
 ---
 
@@ -40,14 +57,23 @@ demo.launch()
 ### 🚀 執行程式碼
 
 **一般模式：**
+如果您已啟用虛擬環境，可直接執行：
 ```bash
 python lesson1.py
+```
+或者，使用 `uv` 直接在暫存或專案虛擬環境中執行（免手動啟用虛擬環境）：
+```bash
+uv run python lesson1.py
 ```
 
 **熱重載開發模式 (Hot Reload Mode)：**
 當您在調整 UI 版面時，推薦使用 `gradio` 命令啟動。這能讓您在修改程式碼後，瀏覽器自動重新載入而不需要手動重啟伺服器：
 ```bash
+# 啟用虛擬環境下
 gradio lesson1.py
+
+# 使用 uv 直接執行
+uv run gradio lesson1.py
 ```
 
 *執行後的網頁介面如下：*

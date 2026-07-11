@@ -94,6 +94,13 @@ pip install -r requirements.txt
 
 ### 2. 執行服務
 在本地不需要手動跑 `train_save.py`，請直接啟動 `app.py`：
+
+**使用 `uv` 執行 (免啟用虛擬環境)：**
+```bash
+uv run app.py
+```
+
+**啟用虛擬環境下執行：**
 ```bash
 python app.py
 ```
