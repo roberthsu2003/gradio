@@ -7,7 +7,10 @@ from fastapi import FastAPI, HTTPException
 import gradio as gr
 from pydantic import BaseModel, Field
 
-# 確保相對導入正常
+# 確保相對導入與模組導入正常：
+# 1. 獲取當前腳本所在的絕對目錄路徑 (current_dir)
+# 2. 檢查該目錄是否已在 Python 的模組搜尋路徑 (sys.path) 中
+# 3. 若不在，則將其插入到搜尋路徑的最前面 (索引 0)，以確保同目錄下的其他自訂模組（例如 train_save）能被正確載入
 current_dir = os.path.dirname(os.path.abspath(__file__))
 if current_dir not in sys.path:
     sys.path.insert(0, current_dir)
