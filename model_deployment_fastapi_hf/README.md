@@ -153,6 +153,9 @@ uv run app.py
 
 ### 步驟 2：利用 Git Subtree 推送子資料夾 (推薦 🚀)
 
+如果您是第一次接觸 subtree，建議先看這份獨立說明：
+[subtree 專門說明](./subtree_guide.md)
+
 請在您的**主專案（包含子資料夾的大 GitHub 倉庫）根目錄**下，開啟終端機執行以下步驟：
 
 #### 1. 將遠端的 Space 臨時克隆至主專案「外部」
